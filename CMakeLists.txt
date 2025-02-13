@@ -203,6 +203,11 @@ set_target_properties(SHADERed PROPERTIES
     CXX_STANDARD_REQUIRED YES
 )
 
+# copy bin to build/bin
+add_custom_command(TARGET SHADERed POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+	${CMAKE_SOURCE_DIR}/bin $<TARGET_FILE_DIR:SHADERed>)
+
 # include directories
 target_include_directories(SHADERed PRIVATE ${SDL2_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIRS} ${ASSIMP_INCLUDE_DIR})
 target_include_directories(SHADERed PRIVATE src libs libs/glslang libs/SPIRV-VM/inc)
