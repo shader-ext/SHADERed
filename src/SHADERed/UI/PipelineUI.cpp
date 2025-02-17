@@ -31,7 +31,7 @@ namespace ed {
 	{
 		std::vector<ed::PipelineItem*>& items = m_data->Pipeline.GetList();
 
-		ImVec2 containerSize = ImVec2(ImGui::GetWindowContentRegionWidth(), abs(ImGui::GetWindowContentRegionMax().y - ImGui::GetWindowContentRegionMin().y));
+		ImVec2 containerSize = ImVec2(ImGui::GetContentRegionAvail().x, abs(ImGui::GetWindowContentRegionMax().y - ImGui::GetWindowContentRegionMin().y));
 		ImGui::BeginChild("##object_scroll_container", containerSize);
 
 		if (items.size() == 0)
@@ -1093,7 +1093,7 @@ namespace ed {
 		ImGui::NextColumn();
 
 		if (scrollToBottom) {
-			ImGui::SetScrollHere();
+			ImGui::SetScrollHereY();
 			scrollToBottom = false;
 		}
 
@@ -1220,7 +1220,7 @@ namespace ed {
 		}
 
 		if (scrollToBottom) {
-			ImGui::SetScrollHere();
+			ImGui::SetScrollHereY();
 			scrollToBottom = false;
 		}
 
@@ -1580,7 +1580,7 @@ namespace ed {
 		ImGui::NextColumn();
 
 		if (scrollToBottom) {
-			ImGui::SetScrollHere();
+			ImGui::SetScrollHereY();
 			scrollToBottom = false;
 		}
 

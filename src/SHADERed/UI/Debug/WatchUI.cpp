@@ -20,10 +20,11 @@ namespace ed {
 		// Main window
 		ImGui::BeginChild("##watch_viewarea", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
 
-		if (ImGui::BeginTable("##watches_tbl", 2, ImGuiTableFlags_Resizable | ImGuiTableFlags_ScrollFreezeTopRow | ImGuiTableFlags_ScrollY, ImVec2(0, Settings::Instance().CalculateSize(-ImGui::GetFontSize() - 10.0f)))) {
+		if (ImGui::BeginTable("##watches_tbl", 2, ImGuiTableFlags_Resizable | ImGuiTableFlags_ScrollY, ImVec2(0, Settings::Instance().CalculateSize(-ImGui::GetFontSize() - 10.0f)))) {
 			ImGui::TableSetupColumn("Expression");
 			ImGui::TableSetupColumn("Value");
-			ImGui::TableAutoHeaders();
+			ImGui::TableSetupScrollFreeze(0, 1);
+			ImGui::TableHeadersRow();
 
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0, 0, 0, 0));
 			for (size_t i = 0; i < exprs.size(); i++) {

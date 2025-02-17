@@ -343,7 +343,7 @@ namespace ed {
 		ImGui::PopItemWidth();
 
 		// update FBO
-		float wndWidth = ImGui::GetWindowContentRegionWidth();
+		float wndWidth = ImGui::GetContentRegionAvail().x;
 		float wndHeight = ImGui::GetContentRegionAvail().y;
 		if (m_lastFBOHeight != wndHeight || m_lastFBOWidth != wndWidth) {
 			glBindTexture(GL_TEXTURE_2D, m_fboColor);

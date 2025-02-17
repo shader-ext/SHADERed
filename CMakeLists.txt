@@ -96,9 +96,10 @@ set(SOURCES
 	libs/ImGuiColorTextEdit/TextEditor.cpp
 	libs/imgui/imgui_draw.cpp
 	libs/imgui/imgui_widgets.cpp
+	libs/imgui/imgui_tables.cpp
 	libs/imgui/imgui.cpp
-	libs/imgui/examples/imgui_impl_opengl3.cpp
-	libs/imgui/examples/imgui_impl_sdl.cpp
+	libs/imgui/backends/imgui_impl_opengl3.cpp
+	libs/imgui/backends/imgui_impl_sdl2.cpp
 	libs/SPIRVCross/spirv_cfg.cpp
 	libs/SPIRVCross/spirv_cross.cpp
 	libs/SPIRVCross/spirv_cross_util.cpp
@@ -109,8 +110,12 @@ set(SOURCES
 	libs/pugixml/src/pugixml.cpp
 	libs/ShaderExpressionParser/Parser.cpp
 	libs/ShaderExpressionParser/Tokenizer.cpp
-	libs/misc/ImFileDialog.cpp
+	libs/ImFileDialog/ImFileDialog.cpp
 	libs/misc/dds.c
+	libs/stb/stb_image.h
+	libs/stb/stb_image_resize2.h
+	libs/stb/stb_image_write.h
+	libs/stb/stb_vorbis.c
 )
 
 # add header files

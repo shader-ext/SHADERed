@@ -4,7 +4,7 @@
 
 #include <pugixml/src/pugixml.hpp>
 #include <misc/zip_file.hpp>
-#include <misc/stb_image.h>
+#include <stb/stb_image.h>
 #define CPPHTTPLIB_CONNECTION_TIMEOUT_SECOND 3
 #include <misc/httplib.h>
 

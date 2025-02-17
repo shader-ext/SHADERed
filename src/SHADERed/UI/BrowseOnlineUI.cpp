@@ -4,9 +4,10 @@
 #include <SHADERed/UI/UIHelper.h>
 #include <SHADERed/Objects/Logger.h>
 #include <SHADERed/Objects/Settings.h>
+
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
-#include <misc/stb_image.h>
+#include <stb/stb_image.h>
 
 namespace ed {
 	BrowseOnlineUI::BrowseOnlineUI(GUIManager* ui, ed::InterfaceManager* objects, const std::string& name, bool visible)
@@ -124,9 +125,9 @@ namespace ed {
 				ImGui::BeginChild("##online_shader_container", ImVec2(0, Settings::Instance().CalculateSize(-60)));
 
 				if (ImGui::BeginTable("##shaders_table", 2, ImGuiTableFlags_None)) {
-					ImGui::TableSetupColumn("Thumbnail", ImGuiTableColumnFlags_WidthAlwaysAutoResize);
+					ImGui::TableSetupColumn("Thumbnail", ImGuiTableColumnFlags_WidthFixed);
 					ImGui::TableSetupColumn("Info", ImGuiTableColumnFlags_WidthStretch);
-					ImGui::TableAutoHeaders();
+					ImGui::TableHeadersRow();
 
 					for (int i = 0; i < std::min<int>(12, m_onlineShaders.size()); i++) {
 						const ed::WebAPI::ShaderResult& shaderInfo = m_onlineShaders[i];
@@ -222,9 +223,9 @@ namespace ed {
 				ImGui::BeginChild("##online_plugin_container", ImVec2(0, Settings::Instance().CalculateSize(-60)));
 
 				if (ImGui::BeginTable("##plugins_table", 2, ImGuiTableFlags_None)) {
-					ImGui::TableSetupColumn("Thumbnail", ImGuiTableColumnFlags_WidthAlwaysAutoResize);
+					ImGui::TableSetupColumn("Thumbnail", ImGuiTableColumnFlags_WidthFixed);
 					ImGui::TableSetupColumn("Info", ImGuiTableColumnFlags_WidthStretch);
-					ImGui::TableAutoHeaders();
+					ImGui::TableHeadersRow();
 
 					for (int i = 0; i < std::min<int>(12, m_onlinePlugins.size()); i++) {
 						const ed::WebAPI::PluginResult& pluginInfo = m_onlinePlugins[i];
@@ -330,9 +331,9 @@ namespace ed {
 				ImGui::BeginChild("##online_theme_container", ImVec2(0, Settings::Instance().CalculateSize(-60)));
 
 				if (ImGui::BeginTable("##themes_table", 2, ImGuiTableFlags_None)) {
-					ImGui::TableSetupColumn("Thumbnail", ImGuiTableColumnFlags_WidthAlwaysAutoResize);
+					ImGui::TableSetupColumn("Thumbnail", ImGuiTableColumnFlags_WidthFixed);
 					ImGui::TableSetupColumn("Info", ImGuiTableColumnFlags_WidthStretch);
-					ImGui::TableAutoHeaders();
+					ImGui::TableHeadersRow();
 
 					for (int i = 0; i < std::min<int>(12, m_onlineThemes.size()); i++) {
 						const ed::WebAPI::ThemeResult& themeInfo = m_onlineThemes[i];

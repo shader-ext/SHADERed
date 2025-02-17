@@ -14,12 +14,12 @@ namespace ed {
 		auto bkptStates = m_data->Debugger.GetBreakpointStateList();
 		bool isEnabled = false;
 
-		if (ImGui::BeginTable("##breakpoints_tbl", 4, ImGuiTableFlags_Resizable | ImGuiTableFlags_ScrollFreezeTopRow | ImGuiTableFlags_ScrollY, ImVec2(0, Settings::Instance().CalculateSize(-ImGui::GetFontSize() - 10.0f)))) {
+		if (ImGui::BeginTable("##breakpoints_tbl", 4, ImGuiTableFlags_Resizable | ImGuiTableFlags_ScrollY, ImVec2(0, Settings::Instance().CalculateSize(-ImGui::GetFontSize() - 10.0f)))) {
 			ImGui::TableSetupColumn("File");
-			ImGui::TableSetupColumn("Enabled", ImGuiTableColumnFlags_WidthAlwaysAutoResize);
+			ImGui::TableSetupColumn("Enabled", ImGuiTableColumnFlags_WidthFixed);
 			ImGui::TableSetupColumn("Condition");
-			ImGui::TableSetupColumn("Line", ImGuiTableColumnFlags_WidthAlwaysAutoResize);
-			ImGui::TableAutoHeaders();
+			ImGui::TableSetupColumn("Line", ImGuiTableColumnFlags_WidthFixed);
+			ImGui::TableHeadersRow();
 
 			for (const auto& bkpt : bkpts) {
 				std::string fileNameStr = std::filesystem::path(bkpt.first).filename().string();

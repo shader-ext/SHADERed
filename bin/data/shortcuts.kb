@@ -1,97 +1,97 @@
 CodeUI.Compile F5
-CodeUI.Save CTRL S
-CodeUI.SwitchView ALT F2
-CodeUI.ToggleStatusbar CTRL SHIFT F2
-Editor.AutocompleteDown Down
-Editor.AutocompleteOpen CTRL Space
+CodeUI.Save ModCtrl S
+CodeUI.SwitchView ModAlt F2
+CodeUI.ToggleStatusbar ModCtrl ModShift F2
+Editor.AutocompleteDown DownArrow
+Editor.AutocompleteOpen ModCtrl Space
 Editor.AutocompleteSelect Tab
-Editor.AutocompleteSelectActive Return
-Editor.AutocompleteUp Up
+Editor.AutocompleteSelectActive Enter
+Editor.AutocompleteUp UpArrow
 Editor.BackwardDelete Backspace
-Editor.BackwardDeleteWord CTRL Backspace
-Editor.CommentLines CTRL SHIFT K
-Editor.Copy CTRL C
-Editor.Cut CTRL X
+Editor.BackwardDeleteWord ModCtrl Backspace
+Editor.CommentLines ModCtrl ModShift K
+Editor.Copy ModCtrl C
+Editor.Cut ModCtrl X
 Editor.DebugBreakpoint F9
 Editor.DebugContinue F5
-Editor.DebugJumpHere CTRL ALT H
+Editor.DebugJumpHere ModCtrl ModAlt H
 Editor.DebugStep F10
 Editor.DebugStepInto F11
-Editor.DebugStepOut SHIFT F11
-Editor.DebugStop SHIFT F5
-Editor.DeleteLeft SHIFT Backspace
-Editor.DeleteRight SHIFT Delete
-Editor.DuplicateLine CTRL D
-Editor.Find CTRL F
+Editor.DebugStepOut ModShift F11
+Editor.DebugStop ModShift F5
+Editor.DeleteLeft ModShift Backspace
+Editor.DeleteRight ModShift Delete
+Editor.DuplicateLine ModCtrl D
+Editor.Find ModCtrl F
 Editor.FindNext F3
 Editor.ForwardDelete Delete
-Editor.ForwardDeleteWord CTRL Delete
+Editor.ForwardDeleteWord ModCtrl Delete
 Editor.Indent Tab
-Editor.MoveBottom CTRL End
-Editor.MoveDown Down
+Editor.MoveBottom ModCtrl End
+Editor.MoveDown DownArrow
 Editor.MoveDownBlock PageDown
 Editor.MoveEndLine End
-Editor.MoveLeft Left
-Editor.MoveRight Right
+Editor.MoveLeft LeftArrow
+Editor.MoveRight RightArrow
 Editor.MoveStartLine Home
-Editor.MoveTop CTRL Home
-Editor.MoveUp Up
+Editor.MoveTop ModCtrl Home
+Editor.MoveUp UpArrow
 Editor.MoveUpBlock PageUp
-Editor.MoveWordLeft CTRL Left
-Editor.MoveWordRight CTRL Right
-Editor.NewLine Return
+Editor.MoveWordLeft ModCtrl LeftArrow
+Editor.MoveWordRight ModCtrl RightArrow
+Editor.NewLine Enter
 Editor.OverwriteCursor Insert
-Editor.Paste CTRL V
-Editor.Redo CTRL Y
-Editor.Replace CTRL H
-Editor.SelectAll CTRL A
-Editor.SelectBottom CTRL SHIFT End
-Editor.SelectDown SHIFT Down
-Editor.SelectDownBlock SHIFT PageDown
-Editor.SelectEndLine SHIFT End
-Editor.SelectLeft SHIFT Left
-Editor.SelectRight SHIFT Right
-Editor.SelectStartLine SHIFT Home
-Editor.SelectTop CTRL SHIFT Home
-Editor.SelectUp SHIFT Up
-Editor.SelectUpBlock SHIFT PageUp
-Editor.SelectWordLeft CTRL SHIFT Left
-Editor.SelectWordRight CTRL SHIFT Right
-Editor.UncommentLines CTRL SHIFT U
-Editor.Undo CTRL Z
-Editor.Unindent SHIFT Tab
-Gizmo.Position CTRL G P
-Gizmo.Rotation CTRL G R
-Gizmo.Scale CTRL G S
+Editor.Paste ModCtrl V
+Editor.Redo ModCtrl Y
+Editor.Replace ModCtrl H
+Editor.SelectAll ModCtrl A
+Editor.SelectBottom ModCtrl ModShift End
+Editor.SelectDown ModShift DownArrow
+Editor.SelectDownBlock ModShift PageDown
+Editor.SelectEndLine ModShift End
+Editor.SelectLeft ModShift LeftArrow
+Editor.SelectRight ModShift RightArrow
+Editor.SelectStartLine ModShift Home
+Editor.SelectTop ModCtrl ModShift Home
+Editor.SelectUp ModShift UpArrow
+Editor.SelectUpBlock ModShift PageUp
+Editor.SelectWordLeft ModCtrl ModShift LeftArrow
+Editor.SelectWordRight ModCtrl ModShift RightArrow
+Editor.UncommentLines ModCtrl ModShift U
+Editor.Undo ModCtrl Z
+Editor.Unindent ModShift Tab
+Gizmo.Position ModCtrl G P
+Gizmo.Rotation ModCtrl G R
+Gizmo.Scale ModCtrl G S
 Preview.Delete Delete
-Preview.Duplicate SHIFT D
-Preview.DecreaseTime CTRL Left
-Preview.DecreaseTimeFast CTRL SHIFT Left
-Preview.IncreaseTime CTRL Right
-Preview.IncreaseTimeFast CTRL SHIFT Right
-Preview.SaveImage CTRL R
-Preview.SelectAll SHIFT A
+Preview.Duplicate ModShift D
+Preview.DecreaseTime ModCtrl LeftArrow
+Preview.DecreaseTimeFast ModCtrl ModShift LeftArrow
+Preview.IncreaseTime ModCtrl RightArrow
+Preview.IncreaseTimeFast ModCtrl ModShift RightArrow
+Preview.SaveImage ModCtrl R
+Preview.SelectAll ModShift A
 Preview.ResetTime Backspace
 Preview.TogglePause Space
-Preview.ToggleStatusbar CTRL SHIFT F3
-Preview.Unselect CTRL SHIFT Delete
-Project.New CTRL N N
-Project.NewAudio CTRL N A
-Project.NewBuffer CTRL N B
-Project.NewCubeMap CTRL N C
-Project.NewRenderTexture CTRL N R
-Project.NewShaderPass CTRL N P
-Project.NewTexture CTRL N T
-Project.Open CTRL O
-Project.Rebuild CTRL F5
-Project.Save CTRL S
-Project.SaveAs CTRL P A
-Window.Exit ALT F4
-Workspace.HideEditor CTRL W E
-Workspace.HidePinned CTRL W N
-Workspace.HidePipeline CTRL W L
-Workspace.HidePreview CTRL W P
-Workspace.HideProperties CTRL W R
-Workspace.Options CTRL W O
+Preview.ToggleStatusbar ModCtrl ModShift F3
+Preview.Unselect ModCtrl ModShift Delete
+Project.New ModCtrl N N
+Project.NewAudio ModCtrl N A
+Project.NewBuffer ModCtrl N B
+Project.NewCubeMap ModCtrl N C
+Project.NewRenderTexture ModCtrl N R
+Project.NewShaderPass ModCtrl N P
+Project.NewTexture ModCtrl N T
+Project.Open ModCtrl O
+Project.Rebuild ModCtrl F5
+Project.Save ModCtrl S
+Project.SaveAs ModCtrl P A
+Window.Exit ModAlt F4
+Workspace.HideEditor ModCtrl W E
+Workspace.HidePinned ModCtrl W N
+Workspace.HidePipeline ModCtrl W L
+Workspace.HidePreview ModCtrl W P
+Workspace.HideProperties ModCtrl W R
+Workspace.Options ModCtrl W O
 Workspace.PerformanceMode F
-Workspace.ToggleToolbar CTRL SHIFT F1
+Workspace.ToggleToolbar ModCtrl ModShift F1

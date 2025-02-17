@@ -6,12 +6,13 @@
 #include <SHADERed/UI/ObjectPreviewUI.h>
 #include <SHADERed/UI/PropertyUI.h>
 #include <SHADERed/UI/UIHelper.h>
+
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <misc/ImFileDialog.h>
+#include <ImFileDialog/ImFileDialog.h>
 
 #define IMAGE_CONTEXT_WIDTH Settings::Instance().CalculateSize(150)
 
@@ -21,7 +22,7 @@ namespace ed {
 	}
 	void ObjectListUI::Update(float delta)
 	{
-		ImVec2 containerSize = ImVec2(ImGui::GetWindowContentRegionWidth(), abs(ImGui::GetWindowContentRegionMax().y - ImGui::GetWindowContentRegionMin().y));
+		ImVec2 containerSize = ImVec2(ImGui::GetContentRegionAvail().x, abs(ImGui::GetWindowContentRegionMax().y - ImGui::GetWindowContentRegionMin().y));
 		bool itemMenuOpened = false;
 		std::vector<ObjectManagerItem*>& items = m_data->Objects.GetObjects();
 		const std::vector<PipelineItem*>& passes = m_data->Pipeline.GetList();
@@ -81,9 +82,9 @@ namespace ed {
 				bool hasPluginPreview = isPluginOwner && pobj->Owner->Object_HasPreview(pobj->Type);
 				if (oItem->Type == ObjectType::CubeMap) {
 					m_cubePrev.Draw(tex);
-					ImGui::Image((void*)(intptr_t)m_cubePrev.GetTexture(), ImVec2(IMAGE_CONTEXT_WIDTH, ((float)imgWH) * IMAGE_CONTEXT_WIDTH), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Image((ImTextureID)(intptr_t)m_cubePrev.GetTexture(), ImVec2(IMAGE_CONTEXT_WIDTH, ((float)imgWH) * IMAGE_CONTEXT_WIDTH), ImVec2(0, 1), ImVec2(1, 0));
 				} else if (!isBuf && !isImg3D && !isPluginOwner)
-					ImGui::Image((void*)(intptr_t)tex, ImVec2(IMAGE_CONTEXT_WIDTH, ((float)imgWH) * IMAGE_CONTEXT_WIDTH), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Image((ImTextureID)(intptr_t)tex, ImVec2(IMAGE_CONTEXT_WIDTH, ((float)imgWH) * IMAGE_CONTEXT_WIDTH), ImVec2(0, 1), ImVec2(1, 0));
 				else if (hasPluginPreview)
 					pobj->Owner->Object_ShowPreview(pobj->Type, pobj->Data, pobj->ID);
 
@@ -99,14 +100,14 @@ namespace ed {
 				bool hasPluginPreview = isPluginOwner && pobj->Owner->Object_HasPreview(pobj->Type);
 				if (oItem->Type == ObjectType::CubeMap) {
 					m_cubePrev.Draw(tex);
-					ImGui::Image((void*)(intptr_t)m_cubePrev.GetTexture(), ImVec2(IMAGE_CONTEXT_WIDTH, ((float)imgWH) * IMAGE_CONTEXT_WIDTH), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Image((ImTextureID)(intptr_t)m_cubePrev.GetTexture(), ImVec2(IMAGE_CONTEXT_WIDTH, ((float)imgWH) * IMAGE_CONTEXT_WIDTH), ImVec2(0, 1), ImVec2(1, 0));
 				} 
 				else if (oItem->Type == ObjectType::Texture3D || oItem->Type == ObjectType::Image3D) {
 					m_tex3DPrev.Draw(tex, IMAGE_CONTEXT_WIDTH, ((float)imgWH) * IMAGE_CONTEXT_WIDTH);
-					ImGui::Image((void*)(intptr_t)m_tex3DPrev.GetTexture(), ImVec2(IMAGE_CONTEXT_WIDTH, ((float)imgWH) * IMAGE_CONTEXT_WIDTH));
+					ImGui::Image((ImTextureID)(intptr_t)m_tex3DPrev.GetTexture(), ImVec2(IMAGE_CONTEXT_WIDTH, ((float)imgWH) * IMAGE_CONTEXT_WIDTH));
 				}
 				else if (!isBuf && !isImg3D && !isPluginOwner)
-					ImGui::Image((void*)(intptr_t)tex, ImVec2(IMAGE_CONTEXT_WIDTH, ((float)imgWH) * IMAGE_CONTEXT_WIDTH), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Image((ImTextureID)(intptr_t)tex, ImVec2(IMAGE_CONTEXT_WIDTH, ((float)imgWH) * IMAGE_CONTEXT_WIDTH), ImVec2(0, 1), ImVec2(1, 0));
 				else if (hasPluginPreview)
 					pobj->Owner->Object_ShowPreview(pobj->Type, pobj->Data, pobj->ID);
 

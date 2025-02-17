@@ -17,8 +17,9 @@
 #include <thread>
 #include <string>
 
-#include <misc/stb_image.h>
-#include <misc/stb_image_write.h>
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
+#include <stb/stb_image_write.h>
 
 #if defined(__linux__) || defined(__unix__)
 #include <libgen.h>

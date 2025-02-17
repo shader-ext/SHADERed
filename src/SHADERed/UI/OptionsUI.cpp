@@ -7,7 +7,7 @@
 #include <SHADERed/UI/OptionsUI.h>
 #include <SHADERed/UI/UIHelper.h>
 
-#include <misc/ImFileDialog.h>
+#include <ImFileDialog/ImFileDialog.h>
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
@@ -27,30 +27,45 @@ namespace ed {
 
 	void OptionsUI::OnEvent(const SDL_Event& e)
 	{
-		if (m_page == Page::Shortcuts && m_selectedShortcut != -1) {
-			if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
-				m_newShortcut.Alt = e.key.keysym.mod & KMOD_ALT;
-				m_newShortcut.Ctrl = e.key.keysym.mod & KMOD_CTRL;
-				m_newShortcut.Shift = e.key.keysym.mod & KMOD_SHIFT;
+		if (m_page != Page::Shortcuts || m_selectedShortcut == -1)
+			return;
 
-				if (e.key.keysym.sym != SDLK_LALT && e.key.keysym.sym != SDLK_LSHIFT && e.key.keysym.sym != SDLK_LCTRL && e.key.keysym.sym != SDLK_RALT && e.key.keysym.sym != SDLK_RSHIFT && e.key.keysym.sym != SDLK_RCTRL) {
-					std::string name = KeyboardShortcuts::Instance().GetNameList()[m_selectedShortcut];
-					if (name.find("Editor") == std::string::npos || m_newShortcut.Alt == true || m_newShortcut.Ctrl == true || m_newShortcut.Shift == true) {
-						if (m_newShortcut.Key1 == -1)
-							m_newShortcut.Key1 = e.key.keysym.sym;
-						else if (m_newShortcut.Key2 == -1)
-							m_newShortcut.Key2 = e.key.keysym.sym;
-						else {
-							m_newShortcut.Key1 = e.key.keysym.sym;
-							m_newShortcut.Key2 = -1;
-						}
-					} else {
-						m_newShortcut.Key1 = -1;
-						m_newShortcut.Key2 = -1;
+		ImGuiIO& io = ImGui::GetIO();
+
+		// Check if any key is pressed
+		for (int key = ImGuiKey_NamedKey_BEGIN; key < ImGuiKey_NamedKey_END; ++key)
+		{
+			if (ImGui::IsKeyPressed((ImGuiKey)key))
+			{
+				// Update state of modifier keys (Alt, Ctrl, Shift)
+				m_newShortcut.Alt = io.KeyAlt;
+				m_newShortcut.Ctrl = io.KeyCtrl;
+				m_newShortcut.Shift = io.KeyShift;
+			
+				// Skip modifier keys
+				if (key == ImGuiKey_LeftAlt || key == ImGuiKey_RightAlt || key == ImGuiKey_LeftShift || key == ImGuiKey_RightShift || key == ImGuiKey_LeftCtrl || key == ImGuiKey_RightCtrl) {
+					m_newShortcut.Key1 = ImGuiKey_None;
+					m_newShortcut.Key2 = ImGuiKey_None;
+					continue;
+				}
+
+				// Check shortcut name & modifier condition
+				std::string name = KeyboardShortcuts::Instance().GetNameList()[m_selectedShortcut];
+				if (name.find("Editor") != std::string::npos || m_newShortcut.Alt || m_newShortcut.Ctrl || m_newShortcut.Shift) {
+					// Assign to Key1 or Key2
+					if (m_newShortcut.Key1 == ImGuiKey_None)
+						m_newShortcut.Key1 = (ImGuiKey)key;
+					else if (m_newShortcut.Key2 == ImGuiKey_None)
+						m_newShortcut.Key2 = (ImGuiKey)key;
+					else {
+						// If both of Key1 and Key2 is assigned, reset & assigned to Key1
+						m_newShortcut.Key1 = (ImGuiKey)key;
+						m_newShortcut.Key2 = ImGuiKey_None;
 					}
 				} else {
-					m_newShortcut.Key1 = -1;
-					m_newShortcut.Key2 = -1;
+					// If the condition does not match, reset both Key1 and Key2
+					m_newShortcut.Key1 = ImGuiKey_None;
+					m_newShortcut.Key2 = ImGuiKey_None;
 				}
 			}
 		}
@@ -59,27 +74,38 @@ namespace ed {
 	{
 		ImGui::BeginChild("##opt_container", ImVec2(0, Settings::Instance().CalculateSize(-30)));
 
-		if (m_page == Page::General)
+		switch (m_page) {
+		case ed::OptionsUI::Page::General:
 			m_renderGeneral();
-		else if (m_page == Page::Editor)
+			break;
+		case ed::OptionsUI::Page::Editor:
 			m_renderEditor();
-		else if (m_page == Page::Debug)
-			m_renderDebug();
-		else if (m_page == Page::Shortcuts)
-			m_renderShortcuts();
-		else if (m_page == Page::Preview)
-			m_renderPreview();
-		else if (m_page == Page::Plugins)
-			m_renderPlugins();
-		else if (m_page == Page::Project)
-			m_renderProject();
-		else if (m_page == Page::CodeSnippets)
+			break;
+		case ed::OptionsUI::Page::CodeSnippets:
 			m_renderCodeSnippets();
-
+			break;
+		case ed::OptionsUI::Page::Debug:
+			m_renderDebug();
+			break;
+		case ed::OptionsUI::Page::Shortcuts:
+			m_renderShortcuts();
+			break;
+		case ed::OptionsUI::Page::Preview:
+			m_renderPreview();
+			break;
+		case ed::OptionsUI::Page::Plugins:
+			m_renderPlugins();
+			break;
+		case ed::OptionsUI::Page::Project:
+			m_renderProject();
+			break;
+		default:
+			break;
+		}
 		ImGui::EndChild();
 
 		
-		
+		// Handle font file dialog
 		if (ifd::FileDialog::Instance().IsDone("OptionsFontDlg")) {
 			if (ifd::FileDialog::Instance().HasResult()) {
 				std::string file = std::filesystem::relative(ifd::FileDialog::Instance().GetResult()).generic_u8string();
@@ -87,6 +113,8 @@ namespace ed {
 			}
 			ifd::FileDialog::Instance().Close();
 		}
+
+		// Handle include directory dialog
 		if (ifd::FileDialog::Instance().IsDone("AddIncludeDirDlg")) {
 			if (ifd::FileDialog::Instance().HasResult()) {
 				std::string ipath = ifd::FileDialog::Instance().GetResult().u8string();
@@ -105,11 +133,11 @@ namespace ed {
 			ifd::FileDialog::Instance().Close();
 		}
 
+		// Handle override shortcut popup
 		if (m_overwriteShortcutOpened) {
 			ImGui::OpenPopup("Are you sure?##opts_popup_shrtct");
 			m_overwriteShortcutOpened = false;
 		}
-
 		if (ImGui::BeginPopupModal("Are you sure?##opts_popup_shrtct")) {
 			ImGui::Text("This will unassign %s, are you sure you want to proceed?", m_exisitingShortcut.c_str());
 			
@@ -165,10 +193,10 @@ namespace ed {
 			ret += "ALT+";
 		if (m_newShortcut.Shift)
 			ret += "SHIFT+";
-		if (m_newShortcut.Key1 != -1)
-			ret += std::string(SDL_GetKeyName(m_newShortcut.Key1)) + "+";
-		if (m_newShortcut.Key2 != -1)
-			ret += std::string(SDL_GetKeyName(m_newShortcut.Key2)) + "+";
+		if (m_newShortcut.Key1 != ImGuiKey_None)
+			ret += std::string(KeyboardShortcuts::GetKeyName(m_newShortcut.Key1)) + "+";
+		if (m_newShortcut.Key2 != ImGuiKey_None)
+			ret += std::string(KeyboardShortcuts::GetKeyName(m_newShortcut.Key2)) + "+";
 
 		if (ret.size() == 0)
 			return "";
@@ -210,6 +238,8 @@ namespace ed {
 		m_snippetCode.SetScrollbarMarkers(false);
 		m_snippetCode.SetLanguageDefinition(TextEditor::LanguageDefinition::GLSL());		
 	}
+
+	// Load the list of available themes
 	void OptionsUI::m_loadThemeList()
 	{
 		Logger::Get().Log("Loading theme list");
@@ -233,6 +263,7 @@ namespace ed {
 		}
 	}
 
+	// Render the General settings page
 	void OptionsUI::m_renderGeneral()
 	{
 		Settings* settings = &Settings::Instance();
@@ -397,11 +428,11 @@ namespace ed {
 		ImGui::SameLine();
 		float xExtPos = ImGui::GetCursorPosX();
 		static char hlslExtEntry[64] = { 0 };
-		if (ImGui::ListBoxHeader("##optg_hlslexts", ImVec2(settings->CalculateSize(100), settings->CalculateSize(100)))) {
+		if (ImGui::BeginListBox("##optg_hlslexts", ImVec2(settings->CalculateSize(100), settings->CalculateSize(100)))) {
 			for (auto& ext : settings->General.HLSLExtensions)
 				if (ImGui::Selectable(ext.c_str()))
 					strcpy(hlslExtEntry, ext.c_str());
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 		ImGui::SetCursorPosX(xExtPos);
 		ImGui::PushItemWidth(settings->CalculateSize(100));
@@ -434,11 +465,11 @@ namespace ed {
 		ImGui::SameLine();
 		xExtPos = ImGui::GetCursorPosX();
 		static char vkExtEntry[64] = { 0 };
-		if (ImGui::ListBoxHeader("##optg_vkexts", ImVec2(settings->CalculateSize(100), settings->CalculateSize(100)))) {
+		if (ImGui::BeginListBox("##optg_vkexts", ImVec2(settings->CalculateSize(100), settings->CalculateSize(100)))) {
 			for (auto& ext : settings->General.VulkanGLSLExtensions)
 				if (ImGui::Selectable(ext.c_str()))
 					strcpy(vkExtEntry, ext.c_str());
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 		ImGui::SetCursorPosX(xExtPos);
 		ImGui::PushItemWidth(settings->CalculateSize(100));
@@ -477,11 +508,11 @@ namespace ed {
 				ImGui::SameLine();
 				xExtPos = ImGui::GetCursorPosX();
 				static char plExtEntry[64] = { 0 };
-				if (ImGui::ListBoxHeader(("##optg_" + langName + "exts").c_str(), ImVec2(settings->CalculateSize(100), settings->CalculateSize(100)))) {
+				if (ImGui::BeginListBox(("##optg_" + langName + "exts").c_str(), ImVec2(settings->CalculateSize(100), settings->CalculateSize(100)))) {
 					for (auto& ext : extVec)
 						if (ImGui::Selectable(ext.c_str()))
 							strcpy(plExtEntry, ext.c_str());
-					ImGui::ListBoxFooter();
+					ImGui::EndListBox();
 				}
 				ImGui::SetCursorPosX(xExtPos);
 				ImGui::PushItemWidth(settings->CalculateSize(100));
@@ -775,12 +806,12 @@ namespace ed {
 					m_selectedShortcut = -1;
 			} else {
 				if (ImGui::Button((KeyboardShortcuts::Instance().GetString(names[i]) + "##stcbtn" + names[i]).c_str(), ImVec2(-1, 0))) {
-					if (ImGui::IsKeyDown(SDL_SCANCODE_LCTRL) || ImGui::IsKeyDown(SDL_SCANCODE_RCTRL))
+					if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) || ImGui::IsKeyDown(ImGuiKey_RightCtrl))
 						KeyboardShortcuts::Instance().Remove(names[i]);
 					else {
 						m_selectedShortcut = i;
 						m_newShortcut.Ctrl = m_newShortcut.Alt = m_newShortcut.Shift = false;
-						m_newShortcut.Key1 = m_newShortcut.Key2 = -1;
+						m_newShortcut.Key1 = m_newShortcut.Key2 = ImGuiKey_None;
 					}
 				}
 			}
@@ -1024,11 +1055,11 @@ namespace ed {
 		ImGui::SameLine();
 		ImGui::Indent(settings->CalculateSize(150));
 		static char ipathEntry[SHADERED_MAX_PATH] = { 0 };
-		if (ImGui::ListBoxHeader("##optpr_ipaths", ImVec2(0, settings->CalculateSize(250)))) {
+		if (ImGui::BeginListBox("##optpr_ipaths", ImVec2(0, settings->CalculateSize(250)))) {
 			for (auto& ext : settings->Project.IncludePaths)
 				if (ImGui::Selectable(ext.c_str()))
 					strcpy(ipathEntry, ext.c_str());
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 		ImGui::PushItemWidth(settings->CalculateSize(-125));
 		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
@@ -1061,7 +1092,7 @@ namespace ed {
 			ImGui::TableSetupColumn("Display", ImGuiTableColumnFlags_WidthFixed);
 			ImGui::TableSetupColumn("Search", ImGuiTableColumnFlags_WidthFixed);
 			ImGui::TableSetupColumn("Snippet", ImGuiTableColumnFlags_WidthStretch);
-			ImGui::TableAutoHeaders();
+			ImGui::TableHeadersRow();
 
 			int rowIndex = 0;
 			for (const auto& snippet : snippets) {
@@ -1094,7 +1125,7 @@ namespace ed {
 			ImGui::TableSetupColumn("Search", ImGuiTableColumnFlags_WidthFixed);
 			ImGui::TableSetupColumn("Snippet", ImGuiTableColumnFlags_WidthStretch);
 			ImGui::TableSetupColumn("Controls", ImGuiTableColumnFlags_WidthFixed);
-			ImGui::TableAutoHeaders();
+			ImGui::TableHeadersRow();
 
 				ImGui::TableNextRow();
 

@@ -37,17 +37,18 @@
 #include <SHADERed/UI/ProfilerUI.h>
 #include <SHADERed/UI/FrameAnalysisUI.h>
 #include <SHADERed/UI/UIHelper.h>
-#include <imgui/examples/imgui_impl_opengl3.h>
-#include <imgui/examples/imgui_impl_sdl.h>
+#include <imgui/backends/imgui_impl_opengl3.h>
+#include <imgui/backends/imgui_impl_sdl2.h>
+
 #include <imgui/imgui.h>
-#include <misc/ImFileDialog.h>
+#include <ImFileDialog/ImFileDialog.h>
 
 #include <filesystem>
 #include <fstream>
 
-#include <misc/stb_image.h>
+#include <stb/stb_image.h>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include <misc/stb_image_write.h>
+#include <stb/stb_image_write.h>
 
 extern "C" {
 #include <misc/dds.h>
@@ -55,7 +56,7 @@ extern "C" {
 
 #define STBIR_DEFAULT_FILTER_DOWNSAMPLE STBIR_FILTER_CATMULLROM
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
-#include <misc/stb_image_resize.h>
+#include <stb/stb_image_resize2.h>
 
 #if defined(__APPLE__)
 // no includes on mac os
@@ -324,17 +325,18 @@ namespace ed {
 
 			return;
 		}
+		if (!(m_optionsOpened && ((OptionsUI*)m_options)->IsListening())) {
+			bool codeHasFocus = ((CodeEditorUI*)Get(ViewID::Code))->HasFocus();
 
-		// check for shortcut presses
-		if (e.type == SDL_KEYDOWN) {
-			if (!(m_optionsOpened && ((OptionsUI*)m_options)->IsListening())) {
-				bool codeHasFocus = ((CodeEditorUI*)Get(ViewID::Code))->HasFocus();
-
-				if (!(ImGui::GetIO().WantTextInput && !codeHasFocus)) {
-					KeyboardShortcuts::Instance().Check(e, codeHasFocus);
-					((CodeEditorUI*)Get(ViewID::Code))->RequestedProjectSave = false;
-				}
+			if (!(ImGui::GetIO().WantTextInput && !codeHasFocus)) {
+				KeyboardShortcuts::Instance().Check(codeHasFocus);
+				((CodeEditorUI*)Get(ViewID::Code))->RequestedProjectSave = false;
 			}
+		}
+		// check for shortcut presses
+		if (e.type == SDL_KEYUP || e.type == SDL_KEYDOWN) {
+			
+			
 		} else if (e.type == SDL_MOUSEMOTION)
 			m_perfModeClock.Restart();
 		else if (e.type == SDL_DROPFILE) {
@@ -497,7 +499,7 @@ namespace ed {
 
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplSDL2_NewFrame(m_wnd);
+		ImGui_ImplSDL2_NewFrame();
 		ImGui::NewFrame();
 
 		// splash screen
@@ -1247,7 +1249,7 @@ namespace ed {
 			ed::Logger::Get().Log("Failed to load Embark logo", true);
 		else {
 			unsigned char* outEmbark = (unsigned char*)malloc(284 * 64 * 4);
-			stbir_resize_uint8(data, width, height, width * 4, outEmbark, 284, 64, 284 * 4, 4);
+			stbir_resize_uint8_linear(data, width, height, width * 4, outEmbark, 284, 64, 284 * 4, (stbir_pixel_layout)4);
 			width = 284;
 			height = 64;
 
@@ -2062,8 +2064,8 @@ namespace ed {
 
 			// resize image
 			if (sizeMulti != 1) {
-				stbir_resize_uint8(pixels, actualSizeX, actualSizeY, actualSizeX * 4,
-					outPixels, m_previewSaveSize.x, m_previewSaveSize.y, m_previewSaveSize.x * 4, 4);
+				stbir_resize_uint8_linear(pixels, actualSizeX, actualSizeY, actualSizeX * 4,
+					outPixels, m_previewSaveSize.x, m_previewSaveSize.y, m_previewSaveSize.x * 4, (stbir_pixel_layout)4);
 			}
 
 			std::string ext = m_previewSavePath.substr(m_previewSavePath.find_last_of('.') + 1);
@@ -2160,8 +2162,8 @@ namespace ed {
 
 							// resize image
 							if (sizeMulti != 1) {
-								stbir_resize_uint8(pixels[worker], actualSizeX, actualSizeY, actualSizeX * 4,
-									outPixels[worker], w, h, w * 4, 4);
+								stbir_resize_uint8_linear(pixels[worker], actualSizeX, actualSizeY, actualSizeX * 4,
+									outPixels[worker], w, h, w * 4, (stbir_pixel_layout)4);
 							} else
 								outPixels[worker] = pixels[worker];
 

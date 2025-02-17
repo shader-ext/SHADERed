@@ -1,8 +1,8 @@
-#include <SHADERed/UI/ProfilerUI.h>
-#include <SHADERed/Objects/Settings.h>
-
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui/imgui_internal.h>
+
+#include <SHADERed/UI/ProfilerUI.h>
+#include <SHADERed/Objects/Settings.h>
 
 #define PROFILER_PADDING 5.0f
 

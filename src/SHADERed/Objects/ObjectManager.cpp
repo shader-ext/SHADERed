@@ -8,9 +8,8 @@
 #include <unordered_map>
 #include <fstream>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <misc/stb_image.h>
-#include <misc/stb_image_write.h>
+#include <stb/stb_image.h>
+#include <stb/stb_image_write.h>
 
 extern "C" {
 #include <misc/dds.h>

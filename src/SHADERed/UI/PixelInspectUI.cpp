@@ -1,3 +1,7 @@
+#define IMGUI_DEFINE_MATH_OPERATORS
+#include <imgui/imgui.h>
+#include <imgui/imgui_internal.h>
+
 #include <SHADERed/Objects/DebugInformation.h>
 #include <SHADERed/Objects/Settings.h>
 #include <SHADERed/Objects/ShaderCompiler.h>
@@ -15,9 +19,6 @@
 #include <SHADERed/UI/PixelInspectUI.h>
 #include <SHADERed/UI/UIHelper.h>
 
-#include <imgui/imgui.h>
-#define IMGUI_DEFINE_MATH_OPERATORS
-#include <imgui/imgui_internal.h>
 #include <glm/gtc/type_ptr.hpp>
 
 #define ICON_BUTTON_WIDTH Settings::Instance().CalculateSize(25)
@@ -558,7 +559,7 @@ namespace ed {
 						} else if (isTex3D) {
 							float imgWH = (tex->height / (float)tex->width);
 							m_tex3DPrev.Draw((GLuint)((uintptr_t)tex->user_data), 128.0f, 128.0f * (float)imgWH);
-							ImGui::Image((void*)(intptr_t)m_tex3DPrev.GetTexture(), ImVec2(128.0f, 128.0f * imgWH));
+							ImGui::Image((ImTextureID)(intptr_t)m_tex3DPrev.GetTexture(), ImVec2(128.0f, 128.0f * imgWH));
 						} else
 							ImGui::Image((ImTextureID)tex->user_data, ImVec2(128.0f, 128.0f * (tex->height / (float)tex->width)), ImVec2(0, 1), ImVec2(1, 0));
 					} else {

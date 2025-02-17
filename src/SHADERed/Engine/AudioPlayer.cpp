@@ -1,13 +1,10 @@
 #include <SHADERed/Engine/AudioPlayer.h>
 
 #define STB_VORBIS_HEADER_ONLY
-#include <misc/stb_vorbis.c>
+#include <stb/stb_vorbis.c>
 
 #define MINIAUDIO_IMPLEMENTATION
 #include <misc/miniaudio.h>
-
-#undef STB_VORBIS_HEADER_ONLY
-#include <misc/stb_vorbis.c>
 
 #define PLAYER_PCM_FRAME_CHUNK_SIZE 512
 

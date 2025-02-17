@@ -8,8 +8,8 @@
 #include <SHADERed/Objects/SPIRVParser.h>
 #include <SHADERed/UI/Tools/StatsPage.h>
 #include <SHADERed/UI/UIView.h>
-#include <imgui/examples/imgui_impl_opengl3.h>
-#include <imgui/examples/imgui_impl_sdl.h>
+#include <imgui/backends/imgui_impl_opengl3.h>
+#include <imgui/backends/imgui_impl_sdl2.h>
 #include <deque>
 #include <future>
 #include <shared_mutex>

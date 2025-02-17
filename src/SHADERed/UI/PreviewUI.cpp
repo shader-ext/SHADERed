@@ -445,7 +445,7 @@ namespace ed {
 			m_fpsLimit = fpsLimit;
 		}
 
-		ImVec2 imageSize = m_imgSize = ImVec2(ImGui::GetWindowContentRegionWidth(), abs(ImGui::GetWindowContentRegionMax().y - ImGui::GetWindowContentRegionMin().y - (STATUSBAR_HEIGHT - ImGui::GetStyle().FramePadding.y) * statusbar));
+		ImVec2 imageSize = m_imgSize = ImVec2(ImGui::GetContentRegionAvail().x, abs(ImGui::GetWindowContentRegionMax().y - ImGui::GetWindowContentRegionMin().y - (STATUSBAR_HEIGHT - ImGui::GetStyle().FramePadding.y) * statusbar));
 		ed::RenderEngine* renderer = &m_data->Renderer;
 
 		if (m_zoomLastSize.x != (int)imageSize.x || m_zoomLastSize.y != (int)imageSize.y) {
@@ -496,7 +496,7 @@ namespace ed {
 			displayImagePtr = m_viewBreakpoints;
 		else if (m_view == PreviewView::VariableValue)
 			displayImagePtr = m_viewVariableValue;
-		ImGui::Image((void*)displayImagePtr, imageSize, ImVec2(zPos.x, zPos.y + zSize.y), ImVec2(zPos.x + zSize.x, zPos.y));
+		ImGui::Image((ImTextureID)displayImagePtr, imageSize, ImVec2(zPos.x, zPos.y + zSize.y), ImVec2(zPos.x + zSize.x, zPos.y));
 		m_hasFocus = ImGui::IsWindowFocused();
 
 		// analyzer tooltip
@@ -602,7 +602,7 @@ namespace ed {
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 			ImGui::SetCursorPosY(ImGui::GetWindowContentRegionMin().y);
-			ImGui::Image((void*)m_overlayColor, imageSize, ImVec2(zPos.x, zPos.y + zSize.y), ImVec2(zPos.x + zSize.x, zPos.y));
+			ImGui::Image((ImTextureID)m_overlayColor, imageSize, ImVec2(zPos.x, zPos.y + zSize.y), ImVec2(zPos.x + zSize.x, zPos.y));
 		}
 
 		m_mousePos = glm::vec2((ImGui::GetMousePos().x - ImGui::GetCursorScreenPos().x - ImGui::GetScrollX()) / imageSize.x,
@@ -617,7 +617,7 @@ namespace ed {
 
 		if (!paused) {
 			// update wasd key state
-			SystemVariableManager::Instance().SetKeysWASD(ImGui::IsKeyDown(SDL_SCANCODE_W), ImGui::IsKeyDown(SDL_SCANCODE_A), ImGui::IsKeyDown(SDL_SCANCODE_S), ImGui::IsKeyDown(SDL_SCANCODE_D));
+			SystemVariableManager::Instance().SetKeysWASD(ImGui::IsKeyDown(ImGuiKey_W), ImGui::IsKeyDown(ImGuiKey_A), ImGui::IsKeyDown(ImGuiKey_S), ImGui::IsKeyDown(ImGuiKey_D));
 
 			// update system variable mouse position value
 			if (ImGui::IsMouseDown(0)) {
@@ -846,8 +846,8 @@ namespace ed {
 				float mult = ImGui::GetIO().KeyShift ? 100.0f : 1.0f;
 
 				ed::FirstPersonCamera* cam = ((ed::FirstPersonCamera*)SystemVariableManager::Instance().GetCamera());
-				cam->MoveUpDown(((ImGui::IsKeyDown(SDL_SCANCODE_S) - ImGui::IsKeyDown(SDL_SCANCODE_W)) / 70.0f) * mult);
-				cam->MoveLeftRight(((ImGui::IsKeyDown(SDL_SCANCODE_D) - ImGui::IsKeyDown(SDL_SCANCODE_A)) / 70.0f) * mult);
+				cam->MoveUpDown(((ImGui::IsKeyDown(ImGuiKey_S) - ImGui::IsKeyDown(ImGuiKey_W)) / 70.0f) * mult);
+				cam->MoveLeftRight(((ImGui::IsKeyDown(ImGuiKey_D) - ImGui::IsKeyDown(ImGuiKey_A)) / 70.0f) * mult);
 			}
 		}
 		// else if paused - pixel inspection
@@ -1440,7 +1440,7 @@ namespace ed {
 		bool isFullFrame = m_isAnalyzingFullFrame;
 		if (ImGui::BeginTabBar("AnalyzerTabs")) {
 			if (ImGui::BeginTabItem("Region")) {
-				if (ImGui::BeginTable("##analyzer_layout", 2, ImGuiTableFlags_BordersVInner, ImVec2(0, -Settings::Instance().CalculateSize(45)))) {
+				if (ImGui::BeginTable("##analyzer_layout", 2, ImGuiTableFlags_BordersInnerV, ImVec2(0, -Settings::Instance().CalculateSize(45)))) {
 					ImGui::TableSetupColumn("##preview", ImGuiTableColumnFlags_WidthStretch, ImGui::GetWindowWidth() - Settings::Instance().CalculateSize(250));
 					ImGui::TableSetupColumn("##controls", ImGuiTableColumnFlags_WidthStretch, Settings::Instance().CalculateSize(250));
 					ImGui::TableNextRow();
@@ -1526,13 +1526,13 @@ namespace ed {
 			}
 			if (ImGui::BeginTabItem("Breakpoints")) {
 				ImGui::Text("Here's a list of relevant breakpoints. Select up to 8 breakpoints");
-				if (ImGui::BeginTable("##breakpoints_table", 5, ImGuiTableFlags_BordersHInner, ImVec2(0, -Settings::Instance().CalculateSize(45)))) {
-					ImGui::TableSetupColumn("Global##bkpt_isglob", ImGuiTableColumnFlags_WidthAlwaysAutoResize);
-					ImGui::TableSetupColumn("Color##bkpt_globclr", ImGuiTableColumnFlags_WidthAlwaysAutoResize);
+				if (ImGui::BeginTable("##breakpoints_table", 5, ImGuiTableFlags_BordersInnerH, ImVec2(0, -Settings::Instance().CalculateSize(45)))) {
+					ImGui::TableSetupColumn("Global##bkpt_isglob", ImGuiTableColumnFlags_WidthFixed);
+					ImGui::TableSetupColumn("Color##bkpt_globclr", ImGuiTableColumnFlags_WidthFixed);
 					ImGui::TableSetupColumn("Condition##bkpt_cond", ImGuiTableColumnFlags_WidthStretch);
 					ImGui::TableSetupColumn("File##bkpt_file", ImGuiTableColumnFlags_WidthStretch);
-					ImGui::TableSetupColumn("Line##bkpt_line", ImGuiTableColumnFlags_WidthAlwaysAutoResize);
-					ImGui::TableAutoHeaders();
+					ImGui::TableSetupColumn("Line##bkpt_line", ImGuiTableColumnFlags_WidthFixed);
+					ImGui::TableHeadersRow();
 
 					for (int i = 0; i < m_analyzerBreakpoint.size(); i++) {
 						ImGui::TableNextRow();

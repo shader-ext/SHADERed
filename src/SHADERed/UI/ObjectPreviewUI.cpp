@@ -6,7 +6,7 @@
 #include <SHADERed/UI/UIHelper.h>
 #include <imgui/imgui.h>
 
-#include <misc/ImFileDialog.h>
+#include <ImFileDialog/ImFileDialog.h>
 
 namespace ed {
 	void ObjectPreviewUI::Open(ObjectManagerItem* item)
@@ -122,7 +122,7 @@ namespace ed {
 						const glm::vec2& zPos = m_zoom[i].GetZoomPosition();
 						const glm::vec2& zSize = m_zoom[i].GetZoomSize();
 						m_cubePrev.Draw(item->Texture);
-						ImGui::Image((void*)(intptr_t)m_cubePrev.GetTexture(), aSize, ImVec2(zPos.x, zPos.y + zSize.y), ImVec2(zPos.x + zSize.x, zPos.y));
+						ImGui::Image((ImTextureID)(intptr_t)m_cubePrev.GetTexture(), aSize, ImVec2(zPos.x, zPos.y + zSize.y), ImVec2(zPos.x + zSize.x, zPos.y));
 
 						if (ImGui::IsItemHovered()) m_curHoveredItem = i;
 
@@ -133,7 +133,7 @@ namespace ed {
 
 						ImGui::SetCursorPosX(posX);
 						ImGui::SetCursorPosY(posY);
-						ImGui::Image((void*)(intptr_t)m_zoomColor[i], aSize, ImVec2(zPos.x, zPos.y + zSize.y), ImVec2(zPos.x + zSize.x, zPos.y));
+						ImGui::Image((ImTextureID)(intptr_t)m_zoomColor[i], aSize, ImVec2(zPos.x, zPos.y + zSize.y), ImVec2(zPos.x + zSize.x, zPos.y));
 					}
 					else if (item->Type == ObjectType::Texture3D || item->Type == ObjectType::Image3D) {
 						ImVec2 posSize = ImGui::GetContentRegionAvail();
@@ -153,7 +153,7 @@ namespace ed {
 						const glm::vec2& zPos = m_zoom[i].GetZoomPosition();
 						const glm::vec2& zSize = m_zoom[i].GetZoomSize();
 						m_tex3DPrev.Draw(item->Texture, objSize.x, objSize.y, (float)(m_cachedImgSlice[i] + 0.5f) / objSize.z);
-						ImGui::Image((void*)(intptr_t)m_tex3DPrev.GetTexture(), aSize, ImVec2(zPos.x, zPos.y), ImVec2(zPos.x + zSize.x, zPos.y + zSize.y));
+						ImGui::Image((ImTextureID)(intptr_t)m_tex3DPrev.GetTexture(), aSize, ImVec2(zPos.x, zPos.y), ImVec2(zPos.x + zSize.x, zPos.y + zSize.y));
 
 						if (ImGui::IsItemHovered()) m_curHoveredItem = i;
 
@@ -164,7 +164,7 @@ namespace ed {
 
 						ImGui::SetCursorPosX(posX);
 						ImGui::SetCursorPosY(posY);
-						ImGui::Image((void*)(intptr_t)m_zoomColor[i], aSize, ImVec2(zPos.x, zPos.y), ImVec2(zPos.x + zSize.x, zPos.y + zSize.y));
+						ImGui::Image((ImTextureID)(intptr_t)m_zoomColor[i], aSize, ImVec2(zPos.x, zPos.y), ImVec2(zPos.x + zSize.x, zPos.y + zSize.y));
 					
 						
 						// slices
@@ -220,7 +220,7 @@ namespace ed {
 						ImGui::Text("New buffer size (in bytes):");
 						ImGui::SameLine();
 						ImGui::PushItemWidth(200);
-						ImGui::InputInt("##objprev_newsize", &m_cachedBufSize[i], 1, 10, ImGuiInputTextFlags_AlwaysInsertMode);
+						ImGui::InputInt("##objprev_newsize", &m_cachedBufSize[i], 1, 10);
 						ImGui::PopItemWidth();
 						ImGui::SameLine();
 						if (ImGui::Button("APPLY##objprev_applysize")) {
@@ -380,7 +380,7 @@ namespace ed {
 						const glm::vec2& zPos = m_zoom[i].GetZoomPosition();
 						const glm::vec2& zSize = m_zoom[i].GetZoomSize();
 						
-						ImGui::Image((void*)(intptr_t)item->Texture, aSize, ImVec2(zPos.x, zPos.y + zSize.y), ImVec2(zPos.x + zSize.x, zPos.y));
+						ImGui::Image((ImTextureID)(intptr_t)item->Texture, aSize, ImVec2(zPos.x, zPos.y + zSize.y), ImVec2(zPos.x + zSize.x, zPos.y));
 
 						if (ImGui::IsItemHovered()) {
 							m_curHoveredItem = i;
@@ -431,7 +431,7 @@ namespace ed {
 
 						ImGui::SetCursorPosX(posX);
 						ImGui::SetCursorPosY(posY);
-						ImGui::Image((void*)(intptr_t)m_zoomColor[i], aSize, ImVec2(zPos.x, zPos.y + zSize.y), ImVec2(zPos.x + zSize.x, zPos.y));
+						ImGui::Image((ImTextureID)(intptr_t)m_zoomColor[i], aSize, ImVec2(zPos.x, zPos.y + zSize.y), ImVec2(zPos.x + zSize.x, zPos.y));
 
 						// statusbar & debugger overlay
 						if (item->Type == ObjectType::RenderTexture) {

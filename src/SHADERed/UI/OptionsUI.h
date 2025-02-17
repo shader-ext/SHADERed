@@ -62,6 +62,7 @@ namespace ed {
 		}
 		Page GetGroup() { return m_page; }
 
+		// Apply the selected theme to the UI
 		void ApplyTheme();
 
 		inline const std::vector<std::string>& GetThemeList() { return m_themes; }

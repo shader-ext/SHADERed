@@ -1,11 +1,12 @@
 #include <SHADERed/UI/Debug/ImmediateUI.h>
 #include <SHADERed/UI/UIHelper.h>
+
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace ed {
-	int HistoryCallback(ImGuiTextEditCallbackData* data)
+	int HistoryCallback(ImGuiInputTextCallbackData* data)
 	{
 		HistoryData* history = (HistoryData*)data->UserData;
 

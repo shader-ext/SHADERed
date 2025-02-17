@@ -7,7 +7,7 @@
 	url = https://github.com/dfranx/ImGuiColorTextEdit
 [submodule "libs/imgui"]
 	path = libs/imgui
-	url = https://github.com/dfranx/imgui.git
+	url = https://github.com/duyquangnvx/imgui.git
 	branch = docking
 [submodule "libs/glslang"]
 	path = libs/glslang
@@ -26,4 +26,12 @@
 [submodule "libs/SpvGenTwo"]
 	path = libs/SpvGenTwo
 	url = https://github.com/dfranx/SpvGenTwo
+	ignore = dirty
+[submodule "libs/ImFileDialog"]
+	path = libs/ImFileDialog
+	url = https://github.com/duyquangnvx/ImFileDialog
+	ignore = dirty
+[submodule "libs/stb"]
+	path = libs/stb
+	url = https://github.com/duyquangnvx/stb
 	ignore = dirty

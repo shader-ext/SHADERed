@@ -293,7 +293,7 @@ namespace ed {
 		std::vector<char*>& exprs = m_data->Debugger.GetVectorWatchList();
 		std::vector<glm::vec4>& clrs = m_data->Debugger.GetVectorWatchColors();
 
-		float wWidth = ImGui::GetWindowContentRegionWidth();
+		float wWidth = ImGui::GetContentRegionAvail().x;
 		float wHeight = ImGui::GetWindowContentRegionMax().y - ImGui::GetWindowContentRegionMin().y;
 		float exprHeight = std::max<float>(250.0f, wHeight - 512 - ImGui::GetStyle().WindowPadding.y);
 		float imgHeight = std::min<float>(512.0f, wHeight - exprHeight - ImGui::GetStyle().WindowPadding.y);
@@ -318,11 +318,12 @@ namespace ed {
 		ImGui::BeginChild("##vectorwatch_viewarea", ImVec2(0, exprHeight), true, ImGuiWindowFlags_HorizontalScrollbar);
 
 		
-		if (ImGui::BeginTable("##vector_watch_tbl", 3, ImGuiTableFlags_Resizable | ImGuiTableFlags_ScrollFreezeTopRow | ImGuiTableFlags_ScrollY, ImVec2(0, Settings::Instance().CalculateSize(-ImGui::GetFontSize() - 10.0f)))) {
-			ImGui::TableSetupColumn("Color", ImGuiTableColumnFlags_WidthAlwaysAutoResize);
+		if (ImGui::BeginTable("##vector_watch_tbl", 3, ImGuiTableFlags_Resizable | ImGuiTableFlags_ScrollY, ImVec2(0, Settings::Instance().CalculateSize(-ImGui::GetFontSize() - 10.0f)))) {
+			ImGui::TableSetupColumn("Color", ImGuiTableColumnFlags_WidthFixed);
 			ImGui::TableSetupColumn("Expression");
 			ImGui::TableSetupColumn("Value");
-			ImGui::TableAutoHeaders();
+			ImGui::TableSetupScrollFreeze(0, 1);
+			ImGui::TableHeadersRow();
 
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0, 0, 0, 0));
 
